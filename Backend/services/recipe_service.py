@@ -16,3 +16,7 @@ class RecipeService:
         )
         RecipeRepository.add_recipe(recipe)
         return recipe
+
+    @staticmethod
+    def get_all_recipes():
+        return RecipeRepository.get_all_recipes()
