@@ -14,3 +14,7 @@ class RecipeRepository:
     @staticmethod
     def get_recipes_by_user(user_id):
         return Recipe.query.filter_by(user_id=user_id).all()
+
+    @staticmethod
+    def get_all_recipes():
+        return Recipe.query.all()

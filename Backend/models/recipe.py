@@ -14,3 +14,15 @@ class Recipe(db.Model):
     servings = db.Column(db.Integer)
     prep_time = db.Column(db.Integer)
     cook_time = db.Column(db.Integer)
+
+    def to_dict(self):
+        return {"id": self.id,
+                "user_id": self.user_id,
+                "title": self.title,
+                "images": self.images,
+                "description": self.description,
+                "instructions": self.instructions,
+                "servings": self.servings,
+                "prep_time": self.prep_time,
+                "cook_time": self.cook_time
+                }
