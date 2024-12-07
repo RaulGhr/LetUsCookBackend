@@ -7,3 +7,5 @@ class User(db.Model):
     username = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
+    profileImage = db.Column(db.String(255), nullable=True)
+    description = db.Column(db.String(255), nullable=True)
