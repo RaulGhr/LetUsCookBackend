@@ -14,3 +14,11 @@ class UserRepository:
     @staticmethod
     def get_user_by_email(email):
         return User.query.filter_by(email=email).first()
+
+    @staticmethod
+    def update_user(user):
+        db.session.commit()
+
+    @staticmethod
+    def filter_users_by_username(username):
+        return User.query.filter(User.username.like(f'{username}%')).all()

@@ -28,3 +28,34 @@ def login():
     else:
         return jsonify({"message": "Invalid credentials"}), 401
 
+@user_bp.route('/update_user/<int:user_id>', methods=['PUT'])
+def update_user(user_id):
+    data = request.get_json()
+    updated_user = UserService.update_user(user_id, data)
+
+    if updated_user:
+        return jsonify({
+            "message": "User updated successfully",
+            "user": {"id": updated_user.id,
+                     "username": updated_user.username,
+                     "email": updated_user.email,
+                     "profileImage": updated_user.profileImage,
+                     "description": updated_user.description
+                     }
+                }), 200
+    return jsonify({"message": "User not found"}), 404
+
+@user_bp.route('/filter', methods=['GET'])
+def filter_users():
+    username = request.args.get('username')
+    if not username:
+        return jsonify({"message": "No username provided"}), 400
+
+    users = UserService.filter_users_by_username(username)
+    return jsonify([{
+        "id": user.id,
+        "username": user.username,
+        "email": user.email,
+        "profileImage": user.profileImage,
+        "description": user.description
+    }for user in users]), 200
