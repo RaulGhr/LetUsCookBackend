@@ -16,5 +16,12 @@ class RecipeRepository:
         return Recipe.query.filter_by(user_id=user_id).all()
 
     @staticmethod
-    def get_all_recipes():
+    def get_all_recipes(title=None):
+        if title:
+            return Recipe.query.filter(Recipe.title.startswith(title)).all()
+
         return Recipe.query.all()
+
+    @staticmethod
+    def commit():
+        db.session.commit()

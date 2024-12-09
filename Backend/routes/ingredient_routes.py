@@ -8,7 +8,7 @@ ingredient_bp = Blueprint('ingredient_bp', __name__)
 def create_ingredient():
     body = request.get_json()
     name = body['name']
-    measure_unit = body['measure_unit']
+    measure_unit = body['measureunit']
 
     ingredient = IngredientService.add_ingredient(name, measure_unit)
     return jsonify({"message": "Ingredient created successfully", "ingredient": ingredient.id}), 201

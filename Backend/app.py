@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
 from flask_bcrypt import Bcrypt
 from config import Config
+from routes.middlewares.normalize_request_json import normalize_request_json
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -15,10 +16,13 @@ jwt = JWTManager(app)
 from routes.user_routes import user_bp
 from routes.ingredient_routes import ingredient_bp
 from routes.recipe_routes import recipe_bp
+from models.recipe_ingredient_association import recipe_ingredient
 
 app.register_blueprint(user_bp, url_prefix='/users')
 app.register_blueprint(ingredient_bp, url_prefix='/ingredients')
 app.register_blueprint(recipe_bp, url_prefix='/recipes')
+
+app.before_request(normalize_request_json)
 
 with app.app_context(): db.create_all()
 

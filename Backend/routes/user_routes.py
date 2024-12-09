@@ -1,5 +1,9 @@
+from datetime import timedelta
+
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token
+
+from app import app
 from services.user_service import UserService
 
 user_bp = Blueprint('user_bp', __name__)
@@ -23,7 +27,8 @@ def login():
     user = UserService.get_user_by_email(email)
 
     if user and UserService.check_password(user, password):
-        access_token = create_access_token(identity=user.id)
+        expiry_time = timedelta(minutes=app.config['JWT_EXPIRY_MINUTES'])
+        access_token = create_access_token(identity=user.id, expires_delta=expiry_time)
         return jsonify(access_token=access_token), 200
     else:
         return jsonify({"message": "Invalid credentials"}), 401

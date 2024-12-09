@@ -1,6 +1,5 @@
 from app import db
 from models.user import User
-from models.ingredient import Ingredient
 
 class Recipe(db.Model):
     __tablename__ = 'Recipe'
@@ -14,15 +13,25 @@ class Recipe(db.Model):
     servings = db.Column(db.Integer)
     prep_time = db.Column(db.Integer)
     cook_time = db.Column(db.Integer)
+    number_of_likes = db.Column(db.Integer)
+    ingredients = db.relationship('Ingredient', secondary='RecipeIngredient', back_populates='recipes')
+
+    def like(self):
+        self.number_of_likes += 1
+
+    def dislike(self):
+        self.number_of_likes -= 1
 
     def to_dict(self):
         return {"id": self.id,
-                "user_id": self.user_id,
+                "userId": self.user_id,
                 "title": self.title,
                 "images": self.images,
                 "description": self.description,
                 "instructions": self.instructions,
                 "servings": self.servings,
-                "prep_time": self.prep_time,
-                "cook_time": self.cook_time
+                "prepTime": self.prep_time,
+                "cookTime": self.cook_time,
+                "numberOfLikes": self.number_of_likes,
+                "ingredients": [ingredient.to_dict() for ingredient in self.ingredients]
                 }
