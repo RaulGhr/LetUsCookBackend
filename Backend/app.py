@@ -17,10 +17,12 @@ from routes.user_routes import user_bp
 from routes.ingredient_routes import ingredient_bp
 from routes.recipe_routes import recipe_bp
 from models.recipe_ingredient_association import recipe_ingredient
+from routes.user_follow_routes import user_follow_bp
 
 app.register_blueprint(user_bp, url_prefix='/users')
 app.register_blueprint(ingredient_bp, url_prefix='/ingredients')
 app.register_blueprint(recipe_bp, url_prefix='/recipes')
+app.register_blueprint(user_follow_bp, url_prefix='/user_follows')
 
 app.before_request(normalize_request_json)
 

@@ -6,7 +6,7 @@ class UserService:
     @staticmethod
     def create_user(username, email, password):
         hashed_password = generate_password_hash(password).decode('utf-8')
-        user = User(username=username, email=email, password=hashed_password)
+        user = User(username=username, email=email, password=hashed_password, profileImage="", description="")
         UserRepository.add_user(user)
         return user
 
@@ -21,3 +21,21 @@ class UserService:
     @staticmethod
     def check_password(user, password):
         return check_password_hash(user.password, password)
+
+    @staticmethod
+    def update_user(user_id, user):
+        updatedUser = UserRepository.get_user_by_id(user_id)
+        if updatedUser:
+            if 'username' in user:
+                updatedUser.username = user['username']
+            if 'profileImage' in user:
+                updatedUser.profileImage = user['profileImage']
+            if 'description' in user:
+                updatedUser.description = user['description']
+            UserRepository.update_user(updatedUser)
+            return updatedUser
+        return None
+
+    @staticmethod
+    def filter_users_by_username(username):
+        return UserRepository.filter_users_by_username(username)
