@@ -1,7 +1,7 @@
 from datetime import timedelta
 
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 from app import app
 from services.user_service import UserService
@@ -57,10 +57,11 @@ def filter_users():
         return jsonify({"message": "No username provided"}), 400
 
     users = UserService.filter_users_by_username(username)
-    return jsonify([{
-        "id": user.id,
-        "username": user.username,
-        "email": user.email,
-        "profileImage": user.profileImage,
-        "description": user.description
-    }for user in users]), 200
+    return jsonify([user.to_dict() for user in users]), 200
+
+@user_bp.route('/profile', methods=['GET'])
+@jwt_required()
+def get_logged_in_user_details():
+    user_id = get_jwt_identity()
+    user = UserService.get_user_by_id(user_id)
+    return jsonify(user.to_dict()), 200

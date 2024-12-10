@@ -6,6 +6,7 @@ class Recipe(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey(User.id))
+    user = db.relationship('User', back_populates='recipes')
     title = db.Column(db.String(255), nullable=False)
     images = db.Column(db.Text)
     description = db.Column(db.Text)
@@ -24,7 +25,7 @@ class Recipe(db.Model):
 
     def to_dict(self):
         return {"id": self.id,
-                "userId": self.user_id,
+                "user": self.user.to_dict(),
                 "title": self.title,
                 "images": self.images,
                 "description": self.description,

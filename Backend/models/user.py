@@ -9,3 +9,13 @@ class User(db.Model):
     password = db.Column(db.String(255), nullable=False)
     profileImage = db.Column(db.String(255), nullable=True)
     description = db.Column(db.String(255), nullable=True)
+    recipes = db.relationship('Recipe', back_populates='user', cascade='all, delete-orphan')
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'email': self.email,
+            'profileImage': self.profileImage,
+            'description': self.description,
+        }
