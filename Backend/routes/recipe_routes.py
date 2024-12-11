@@ -17,9 +17,15 @@ def create_recipe():
     servings = data.get('servings')
     prep_time = data.get('preptime')
     cook_time = data.get('cooktime')
-    ingredients_ids = data.get('ingredients')
+    ingredients = data.get('ingredients')
 
-    service_result = RecipeService.add_recipe(user_id, title, images, description, instructions, servings, prep_time, cook_time, ingredients_ids)
+    # ingredients sunt de forma:
+    # {
+    #     id: 1,
+    #     quantity: 2,
+    # }
+
+    service_result = RecipeService.add_recipe(user_id, title, images, description, instructions, servings, prep_time, cook_time, ingredients)
     if not service_result.success:
         return jsonify(service_result.get_error_map()), service_result.status_code
 

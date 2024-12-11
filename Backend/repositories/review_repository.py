@@ -1,5 +1,5 @@
 from models.review import Review
-from app import db
+from extensions import db
 
 class ReviewRepository:
     @staticmethod
