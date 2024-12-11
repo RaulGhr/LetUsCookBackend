@@ -1,4 +1,4 @@
-from app import db
+from extensions import db
 from models.recipe import Recipe
 from models.user import User
 

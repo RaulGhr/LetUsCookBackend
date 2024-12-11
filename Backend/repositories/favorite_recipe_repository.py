@@ -1,4 +1,4 @@
-from app import db
+from extensions import db
 from models.favorite_recipe import FavoriteRecipe
 
 class FavoriteRecipeRepository():

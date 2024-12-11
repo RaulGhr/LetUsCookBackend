@@ -1,11 +1,12 @@
 from datetime import timedelta
 
+import flask
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
-from app import app
-from services.user_service import UserService
 
+from services.user_service import UserService
+app = flask.current_app
 user_bp = Blueprint('user_bp', __name__)
 
 @user_bp.route('/register', methods=['POST'])
@@ -16,10 +17,14 @@ def register():
     password = data.get('password')
 
     user = UserService.create_user(username, email, password)
-    return jsonify({"message": "User created successfully", "user": user.id}), 201
+
+    expiry_time = timedelta(minutes=app.config['JWT_EXPIRY_MINUTES'])
+    access_token = create_access_token(identity=str(user.id), expires_delta=expiry_time)
+    return jsonify(access_token=access_token), 201
 
 @user_bp.route('/login', methods=['POST'])
 def login():
+    print("login")
     data = request.get_json()
     email = data.get('email')
     password = data.get('password')
@@ -28,7 +33,7 @@ def login():
 
     if user and UserService.check_password(user, password):
         expiry_time = timedelta(minutes=app.config['JWT_EXPIRY_MINUTES'])
-        access_token = create_access_token(identity=user.id, expires_delta=expiry_time)
+        access_token = create_access_token(identity=str(user.id), expires_delta=expiry_time)
         return jsonify(access_token=access_token), 200
     else:
         return jsonify({"message": "Invalid credentials"}), 401
@@ -54,7 +59,7 @@ def update_user(user_id):
 def filter_users():
     username = request.args.get('username')
     if not username:
-        return jsonify({"message": "No username provided"}), 400
+        username = ''
 
     users = UserService.filter_users_by_username(username)
     return jsonify([user.to_dict() for user in users]), 200

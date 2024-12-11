@@ -1,17 +1,20 @@
 # app.py
 from flask import Flask
+from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
 from flask_bcrypt import Bcrypt
+from extensions import db, bcrypt, jwt
 from config import Config
 from routes.middlewares.normalize_request_json import normalize_request_json
 
 app = Flask(__name__)
+CORS(app)
 app.config.from_object(Config)
 
-db = SQLAlchemy(app)
-bcrypt = Bcrypt(app)
-jwt = JWTManager(app)
+db.init_app(app)
+bcrypt.init_app(app)
+jwt.init_app(app)
 
 from routes.user_routes import user_bp
 from routes.ingredient_routes import ingredient_bp
