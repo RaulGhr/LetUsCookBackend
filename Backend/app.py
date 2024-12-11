@@ -19,7 +19,6 @@ jwt.init_app(app)
 from routes.user_routes import user_bp
 from routes.ingredient_routes import ingredient_bp
 from routes.recipe_routes import recipe_bp
-from models.recipe_ingredient_association import RecipeIngredient
 from routes.user_follow_routes import user_follow_bp
 from routes.favorite_recipe_routes import favorite_recipe_bp
 from routes.review_routes import review_bp
