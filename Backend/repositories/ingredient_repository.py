@@ -1,5 +1,5 @@
 from models.ingredient import Ingredient
-from app import db
+from extensions import db
 
 class IngredientRepository:
     @staticmethod

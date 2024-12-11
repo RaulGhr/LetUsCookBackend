@@ -1,5 +1,5 @@
 from models.user_follow import UserFollow
-from app import db
+from extensions import db
 
 class UserFollowRepository:
     @staticmethod

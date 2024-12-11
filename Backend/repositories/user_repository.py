@@ -1,5 +1,5 @@
 from models.user import User
-from app import db
+from extensions import db
 
 class UserRepository:
     @staticmethod

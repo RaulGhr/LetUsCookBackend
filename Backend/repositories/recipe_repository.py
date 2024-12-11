@@ -1,5 +1,5 @@
 from models.recipe import Recipe
-from app import db
+from extensions import db
 
 class RecipeRepository:
     @staticmethod
