@@ -41,6 +41,7 @@ def login():
 @user_bp.route('/update_user/<int:user_id>', methods=['PUT'])
 def update_user(user_id):
     data = request.get_json()
+    print(data.keys())
     updated_user = UserService.update_user(user_id, data)
 
     if updated_user:
@@ -58,6 +59,14 @@ def update_user(user_id):
 @user_bp.route('/filter', methods=['GET'])
 def filter_users():
     username = request.args.get('username')
+    id = request.args.get('id')
+
+    if id:
+        users = UserService.get_user_by_id(id)
+        if not users:
+            return jsonify({"message": "User not found"}), 404
+        return jsonify(users.to_dict()), 200
+
     if not username:
         username = ''
 

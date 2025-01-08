@@ -15,3 +15,7 @@ class ReviewService:
     @staticmethod
     def dislike_review(review_id):
         return ReviewRepository.dislike_review(review_id)
+
+    @staticmethod
+    def get_reviews_by_recipe(recipe_id):
+        return ReviewRepository.get_reviews_by_recipe(recipe_id)

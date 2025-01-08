@@ -2,6 +2,8 @@ from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from services.recipe_service import RecipeService
+from services.favorite_recipe_service import FavoriteRecipeService
+from services.user_service import UserService
 
 recipe_bp = Blueprint('recipe_bp', __name__)
 
@@ -28,18 +30,43 @@ def create_recipe():
 @recipe_bp.route('/', methods=['GET'])
 @jwt_required()
 def get_all_recipes():
+    user_id = get_jwt_identity()
     query_params = request.args
     title = query_params.get('title')
+    recipe_id = query_params.get('recipe_id')
 
-    recipes = RecipeService.get_all_recipes(title)
-    return jsonify([recipe.to_dict() for recipe in recipes]), 200
+    recipes = [RecipeService.get_recipe_by_id(recipe_id)] if recipe_id else RecipeService.get_all_recipes(title)
+    favorites = [fav.to_dict()['recipe_id'] for fav in FavoriteRecipeService.get_favorite_recipe_by_user_id(user_id)]
+    recipes_json = [recipe.to_dict() for recipe in recipes]
+    for recipe in recipes_json:
+        recipe['isFavorite'] = recipe['id'] in favorites
 
-@recipe_bp.route('/getAllForUser', methods=['GET'])
+    return jsonify(recipes_json), 200
+
+@recipe_bp.route('/getAllForCurrentUser', methods=['GET'])
 @jwt_required()
 def get_all_recipes_for_user():
     user_id = get_jwt_identity()
     recipes = RecipeService.get_recipes_by_user_id(user_id)
-    return jsonify([recipe.to_dict() for recipe in recipes]), 200
+    favorites = [fav.to_dict()['recipe_id'] for fav in FavoriteRecipeService.get_favorite_recipe_by_user_id(user_id)]
+    recipes_json = [recipe.to_dict() for recipe in recipes]
+    for recipe in recipes_json:
+        recipe['isFavorite'] = recipe['id'] in favorites
+
+    return jsonify(recipes_json), 200
+
+@recipe_bp.route('/getAllById', methods=['GET'])
+@jwt_required()
+def get_all_recipes_by_username():
+    selected_user_id = request.args.get('user_id')
+    user_id = get_jwt_identity()
+    recipes = RecipeService.get_recipes_by_user_id(selected_user_id)
+    favorites = [fav.to_dict()['recipe_id'] for fav in FavoriteRecipeService.get_favorite_recipe_by_user_id(user_id)]
+    recipes_json = [recipe.to_dict() for recipe in recipes]
+    for recipe in recipes_json:
+        recipe['isFavorite'] = recipe['id'] in favorites
+
+    return jsonify(recipes_json), 200
 
 @recipe_bp.route('/<int:recipe_id>/like', methods=['POST'])
 @jwt_required()
@@ -58,4 +85,19 @@ def dislike_recipe(recipe_id):
         return jsonify(service_result.get_error_map()), service_result.status_code
 
     return '', 200
+
+@recipe_bp.route('/favorite', methods=['GET'])
+@jwt_required()
+def get_favorite_recipes():
+    user_id = get_jwt_identity()
+    favorite_recipes = [fav.to_dict() for fav in FavoriteRecipeService.get_favorite_recipe_by_user_id(user_id)]
+    # print(favorite_recipes)
+    result = []
+    for fav in favorite_recipes:
+        recipe = RecipeService.get_recipe_by_id(fav['recipe_id'])
+        recipe_dict = recipe.to_dict()
+        recipe_dict['isFavorite'] = True
+        result.append(recipe_dict)
+
+    return jsonify(result), 200
 

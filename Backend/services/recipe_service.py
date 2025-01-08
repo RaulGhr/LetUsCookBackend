@@ -1,4 +1,4 @@
-from app import db
+from extensions import db
 from models.recipe_ingredient import RecipeIngredient
 from repositories.ingredient_repository import IngredientRepository
 from repositories.recipe_repository import RecipeRepository
@@ -57,6 +57,10 @@ class RecipeService:
     @staticmethod
     def get_recipes_by_user_id(user_id):
         return RecipeRepository.get_recipes_by_user(user_id)
+
+    @staticmethod
+    def get_recipe_by_id(recipe_id):
+        return RecipeRepository.get_recipe_by_id(recipe_id)
 
     @staticmethod
     def like_recipe(recipe_id):

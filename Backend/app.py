@@ -9,7 +9,7 @@ from config import Config
 from routes.middlewares.normalize_request_json import normalize_request_json
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 app.config.from_object(Config)
 
 db.init_app(app)

@@ -8,6 +8,11 @@ class FavoriteRecipeRepository():
         db.session.commit()
 
     @staticmethod
+    def delete_favorite_recipe(favorite_recipe):
+        db.session.delete(favorite_recipe)
+        db.session.commit()
+
+    @staticmethod
     def get_favorite_recipe_by_id(favorite_recipe_id):
         return FavoriteRecipe.query.get(favorite_recipe_id)
 

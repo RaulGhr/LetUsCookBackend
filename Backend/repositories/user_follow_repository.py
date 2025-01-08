@@ -22,3 +22,11 @@ class UserFollowRepository:
     @staticmethod
     def get_follower_count(user_id):
         return UserFollow.query.filter_by(followed_user_id=user_id).count()
+
+    @staticmethod
+    def get_following_users(user_id):
+        return UserFollow.query.filter_by(follower_user_id=user_id).all()
+
+    @staticmethod
+    def is_following(follower_user_id, followed_user_id):
+        return UserFollow.query.filter_by(follower_user_id=follower_user_id, followed_user_id=followed_user_id).first() is not None

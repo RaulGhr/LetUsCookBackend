@@ -1,13 +1,15 @@
 from flask import Blueprint, request, jsonify
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from services.user_follow_service import UserFollowService
 
 user_follow_bp = Blueprint('user_follow_bp', __name__)
 
 @user_follow_bp.route('/follow', methods=['POST'])
+@jwt_required()
 def follow_user():
     data = request.get_json()
-    follower_user_id = data.get('follower_user_id')
     followed_user_id = data.get('followed_user_id')
+    follower_user_id = get_jwt_identity()
 
     try:
         UserFollowService.follow_user(follower_user_id, followed_user_id)
@@ -16,10 +18,12 @@ def follow_user():
         return jsonify({"message": str(e)}), 400
 
 @user_follow_bp.route('/unfollow', methods=['POST'])
+@jwt_required()
 def unfollow_user():
     data = request.get_json()
-    follower_user_id = data.get('follower_user_id')
     followed_user_id = data.get('followed_user_id')
+    follower_user_id = get_jwt_identity()
+
 
     try:
         UserFollowService.unfollow_user(follower_user_id, followed_user_id)
@@ -42,3 +46,12 @@ def get_follower_count(user_id):
         return jsonify({"follower_count": count}), 200
     except ValueError as e:
         return jsonify({"message": str(e)}), 400
+
+@user_follow_bp.route('/is_following', methods=['GET'])
+@jwt_required()
+def is_following():
+    follower_user_id = get_jwt_identity()
+    followed_user_id = request.args.get('user_id')
+
+    return jsonify({"is_following": UserFollowService.is_following(follower_user_id, followed_user_id)}), 200
+

@@ -12,6 +12,10 @@ class ReviewRepository:
         return Review.query.get(review_id)
 
     @staticmethod
+    def get_reviews_by_recipe(recipe_id):
+        return Review.query.filter_by(recipe_id=recipe_id).all()
+
+    @staticmethod
     def like_review(review_id):
         review = Review.query.get(review_id)
         if review:

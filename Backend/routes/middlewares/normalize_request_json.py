@@ -4,6 +4,8 @@ app = Flask(__name__)
 
 @app.before_request
 def normalize_request_json():
+    if request.method == 'OPTIONS':
+        return '', 200
     if request.is_json:
         original_get_json = request.get_json
 

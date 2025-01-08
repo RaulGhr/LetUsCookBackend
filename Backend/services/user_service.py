@@ -30,6 +30,8 @@ class UserService:
                 updatedUser.username = user['username']
             if 'profileImage' in user:
                 updatedUser.profileImage = user['profileImage']
+            if 'profileimage' in user:
+                updatedUser.profileImage = user['profileimage']
             if 'description' in user:
                 updatedUser.description = user['description']
             UserRepository.update_user(updatedUser)
