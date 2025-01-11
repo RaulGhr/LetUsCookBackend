@@ -101,3 +101,14 @@ def get_favorite_recipes():
 
     return jsonify(result), 200
 
+@recipe_bp.route('/getFollowingUsersRecipes', methods=['GET'])
+@jwt_required()
+def get_followed_users_recipes():
+    user_id = get_jwt_identity()
+    recipes = RecipeService.get_recipes_by_followed_users(user_id)
+
+    recipes_sorted = sorted(recipes, key=lambda x: x.created_at, reverse=True)
+    recipes_json = [recipe.to_dict() for recipe in recipes_sorted]
+
+    return jsonify(recipes_json), 200
+

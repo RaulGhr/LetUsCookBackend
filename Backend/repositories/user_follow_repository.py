@@ -30,3 +30,9 @@ class UserFollowRepository:
     @staticmethod
     def is_following(follower_user_id, followed_user_id):
         return UserFollow.query.filter_by(follower_user_id=follower_user_id, followed_user_id=followed_user_id).first() is not None
+
+    @staticmethod
+    def get_following_ids(user_id):
+        following = UserFollow.query.filter_by(follower_user_id=user_id).with_entities(
+            UserFollow.followed_user_id).all()
+        return [user[0] for user in following]

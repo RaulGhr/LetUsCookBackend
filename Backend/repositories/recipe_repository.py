@@ -23,5 +23,9 @@ class RecipeRepository:
         return Recipe.query.all()
 
     @staticmethod
+    def get_recipes_by_followed_users(user_ids):
+        return Recipe.query.filter(Recipe.user_id.in_(user_ids)).order_by(Recipe.created_at.desc()).all()
+
+    @staticmethod
     def commit():
         db.session.commit()

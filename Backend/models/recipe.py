@@ -1,5 +1,6 @@
 from extensions import db
 from models.user import User
+from datetime import datetime
 
 class Recipe(db.Model):
     __tablename__ = 'Recipe'
@@ -15,6 +16,7 @@ class Recipe(db.Model):
     prep_time = db.Column(db.Integer)
     cook_time = db.Column(db.Integer)
     number_of_likes = db.Column(db.Integer)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
     recipe_ingredients = db.relationship(
         'RecipeIngredient',
         back_populates='recipe',
@@ -45,6 +47,7 @@ class Recipe(db.Model):
             "prepTime": self.prep_time,
             "cookTime": self.cook_time,
             "numberOfLikes": self.number_of_likes,
+            "createdAt": self.created_at.isoformat(),
             "ingredients": [
                 {
                     "ingredient": ingredient.to_dict(),
