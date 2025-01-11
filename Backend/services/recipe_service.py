@@ -3,6 +3,7 @@ from models.recipe_ingredient import RecipeIngredient
 from repositories.ingredient_repository import IngredientRepository
 from repositories.recipe_repository import RecipeRepository
 from models.recipe import Recipe
+from repositories.user_follow_repository import UserFollowRepository
 from repositories.user_repository import UserRepository
 from services.service_result import ServiceResult
 
@@ -85,3 +86,11 @@ class RecipeService:
         RecipeRepository.commit()
 
         return ServiceResult(success=True, data=recipe, status_code=200)
+
+    @staticmethod
+    def get_recipes_by_followed_users(user_id):
+        followed_user_ids = UserFollowRepository.get_following_ids(user_id)
+        if not followed_user_ids:
+            return []
+
+        return RecipeRepository.get_recipes_by_followed_users(followed_user_ids)
