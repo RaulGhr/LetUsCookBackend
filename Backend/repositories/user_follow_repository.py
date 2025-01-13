@@ -25,7 +25,13 @@ class UserFollowRepository:
 
     @staticmethod
     def get_following_users(user_id):
-        return UserFollow.query.filter_by(follower_user_id=user_id).all()
+        user_follows = UserFollow.query.filter_by(follower_user_id=user_id).all()
+        return [follow.followed for follow in user_follows]
+
+    @staticmethod
+    def get_follower_users(user_id):
+        user_follows = UserFollow.query.filter_by(followed_user_id=user_id).all()
+        return [follow.follower for follow in user_follows]
 
     @staticmethod
     def is_following(follower_user_id, followed_user_id):

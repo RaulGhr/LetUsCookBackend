@@ -32,7 +32,15 @@ class UserFollowService:
 
     @staticmethod
     def get_following_users(user_id):
+        if not UserRepository.get_user_by_id(user_id):
+            raise ValueError("User ID does not exist")
         return UserFollowRepository.get_following_users(user_id)
+
+    @staticmethod
+    def get_follower_users(user_id):
+        if not UserRepository.get_user_by_id(user_id):
+            raise ValueError("User ID does not exist")
+        return UserFollowRepository.get_follower_users(user_id)
 
     @staticmethod
     def is_following(follower_user_id, followed_user_id):

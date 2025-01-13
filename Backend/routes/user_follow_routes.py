@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from services.user_follow_service import UserFollowService
 
 user_follow_bp = Blueprint('user_follow_bp', __name__)
@@ -55,3 +55,22 @@ def is_following():
 
     return jsonify({"is_following": UserFollowService.is_following(follower_user_id, followed_user_id)}), 200
 
+@user_follow_bp.route('/followers', methods=['GET'])
+@jwt_required()
+def get_follower_users():
+    user_id = request.args.get('user_id')
+    if not user_id:
+        return jsonify({"message": "user_id is required"}), 400
+
+    followers = UserFollowService.get_follower_users(user_id)
+    return jsonify([user.to_dict() for user in followers]), 200
+
+@user_follow_bp.route('/following', methods=['GET'])
+@jwt_required()
+def get_following_users():
+    user_id = request.args.get('user_id')
+    if not user_id:
+        return jsonify({"message": "user_id is required"}), 400
+
+    following = UserFollowService.get_following_users(user_id)
+    return jsonify([user.to_dict() for user in following]), 200
