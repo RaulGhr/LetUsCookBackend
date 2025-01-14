@@ -22,6 +22,7 @@ from routes.recipe_routes import recipe_bp
 from routes.user_follow_routes import user_follow_bp
 from routes.favorite_recipe_routes import favorite_recipe_bp
 from routes.review_routes import review_bp
+from routes.shopping_list_routes import shopping_list_bp
 
 app.register_blueprint(user_bp, url_prefix='/users')
 app.register_blueprint(ingredient_bp, url_prefix='/ingredients')
@@ -29,6 +30,8 @@ app.register_blueprint(recipe_bp, url_prefix='/recipes')
 app.register_blueprint(user_follow_bp, url_prefix='/user_follows')
 app.register_blueprint(favorite_recipe_bp, url_prefix='/favorite_recipes')
 app.register_blueprint(review_bp, url_prefix='/reviews')
+
+app.register_blueprint(shopping_list_bp, url_prefix='/shopping_list')
 
 app.before_request(normalize_request_json)
 
