@@ -58,7 +58,7 @@ def is_following():
 @user_follow_bp.route('/followers', methods=['GET'])
 @jwt_required()
 def get_follower_users():
-    user_id = request.args.get('user_id')
+    user_id = get_jwt_identity()
     if not user_id:
         return jsonify({"message": "user_id is required"}), 400
 
@@ -68,7 +68,7 @@ def get_follower_users():
 @user_follow_bp.route('/following', methods=['GET'])
 @jwt_required()
 def get_following_users():
-    user_id = request.args.get('user_id')
+    user_id = get_jwt_identity()
     if not user_id:
         return jsonify({"message": "user_id is required"}), 400
 

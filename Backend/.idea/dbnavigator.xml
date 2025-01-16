@@ -24,14 +24,19 @@
     <last-used-providers />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files>
-      <object connection-id="868fb519-0dec-47f0-8d58-0803f955152a" object-ref="schemas/main/tables/RecipeIngredient" />
-    </open-files>
+    <open-files />
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
     <connection id="868fb519-0dec-47f0-8d58-0803f955152a" />
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
+    <filter-actions connection-id="868fb519-0dec-47f0-8d58-0803f955152a" dataset="main.RecipeLike" active-filter-id="d1c8f4f8-ea01-46c1-b86d-9d3e0e3b363a">
+      <filter id="d1c8f4f8-ea01-46c1-b86d-9d3e0e3b363a" name="Filter 1" temporary="false" custom-name="false" type="basic" join-type="AND" />
+    </filter-actions>
+    <filter-actions connection-id="868fb519-0dec-47f0-8d58-0803f955152a" dataset="main.Ingredient" active-filter-id="" />
+    <filter-actions connection-id="868fb519-0dec-47f0-8d58-0803f955152a" dataset="main.Recipe" active-filter-id="7067ed82-5af3-448e-b172-2150c906af58">
+      <filter id="7067ed82-5af3-448e-b172-2150c906af58" name="Filter 1" temporary="false" custom-name="false" type="basic" join-type="AND" />
+    </filter-actions>
     <filter-actions connection-id="868fb519-0dec-47f0-8d58-0803f955152a" dataset="main.User" active-filter-id="" />
     <filter-actions connection-id="868fb519-0dec-47f0-8d58-0803f955152a" dataset="main.RecipeIngredient" active-filter-id="EMPTY_FILTER">
       <filter id="345e051d-12ed-4d5d-baee-0bf665fe2a37" name="Filter" temporary="false" custom-name="false" type="basic" join-type="AND">
